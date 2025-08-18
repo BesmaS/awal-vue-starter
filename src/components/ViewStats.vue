@@ -78,7 +78,6 @@ const observeSection = () => {
 
 const fetchViews = async () => {
   const res = await fetch('https://bes.alwaysdata.net/api-total-views.php')
-')
   const data = await res.json()
   animateCount(data.totalViews)
 }
