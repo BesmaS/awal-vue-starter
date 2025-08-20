@@ -3,10 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Public from '../views/Public.vue'
 import Login from '../views/Login.vue'
 import Admin from '../components/Admin.vue'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-
-AOS.init()
 
 
 const routes = [

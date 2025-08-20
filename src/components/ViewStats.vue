@@ -19,7 +19,7 @@
         <!-- 📊 Texte à droite, minimaliste -->
       <div class="w-full md:w-[42%] text-center flex flex-col items-center justify-center mt-8 md:mt-20">
         <span class="text-9xl font-extrabold leading-tight">{{ formattedCount }}</span>
-        <span class="text-5x1 font-medium mt-2 text-[#d8cfc0]">vues cumulés</span>
+        <span class="font-zain text-4xl font-medium mt-4 text-[#d8cfc0]">vues cumulées</span>
       </div>
 
       </div>
@@ -29,78 +29,91 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
-const count = ref(0)
-const videoRef = ref(null)
 const sectionRef = ref(null)
-const hasPlayed = ref(false)
+const videoRef = ref(null)
 const videoSrc = new URL('../assets/videos/AnimationAwal.mp4', import.meta.url).href
 
-const formattedCount = computed(() => count.value.toLocaleString() )
+const count = ref(0)
+const targetCount = ref(0)
+const hasTriggered = ref(false) // évite les déclenchements multiples
+let rafId = null
 
-// Lecture automatique jusqu'à 6 secondes
-const playPreview = () => {
-  const video = videoRef.value
-  if (!video || hasPlayed.value) return
+const formattedCount = computed(() => count.value.toLocaleString())
 
-  hasPlayed.value = true
-  video.currentTime = 0
-  video.play()
+// Easing pour un déroulé plus "smooth"
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3) }
 
-  const stopAt = 6
-  const interval = setInterval(() => {
-    if (video.currentTime >= stopAt) {
-      video.pause()
-      clearInterval(interval)
+function animateCount(to, duration = 1200) {
+  cancelAnimationFrame(rafId)
+  const from = 0
+  const start = performance.now()
+
+  const tick = (now) => {
+    const progress = Math.min(1, (now - start) / duration)
+    const eased = easeOutCubic(progress)
+    count.value = Math.round(from + (to - from) * eased)
+    if (progress < 1) rafId = requestAnimationFrame(tick)
+  }
+
+  rafId = requestAnimationFrame(tick)
+}
+
+async function fetchViewsAndAnimate() {
+  try {
+    // ✅ Mets ici ton endpoint de prod si différent
+    const base = import.meta.env.VITE_API_BASE || 'http://localhost/portfolio-backend'
+    const res = await fetch(`${base}/api-total-views.php`, { cache: 'no-store' })
+    const data = await res.json()
+    targetCount.value = Number(data.totalViews) || 0
+    animateCount(targetCount.value)
+  } catch (e) {
+    // Fallback si l’API est KO : on n’empêche pas l’UI de tourner
+    console.error('Erreur compteur:', e)
+    targetCount.value = 0
+    animateCount(0, 600)
+  }
+}
+
+function playPreview(seconds = 6) {
+  const vid = videoRef.value
+  if (!vid) return
+  vid.currentTime = 0
+  vid.play().catch(() => {})
+  const stopAt = vid.currentTime + seconds
+  const intId = setInterval(() => {
+    if (vid.currentTime >= stopAt || vid.ended) {
+      vid.pause()
+      clearInterval(intId)
     }
   }, 100)
 }
 
-const observeSection = () => {
-  const section = sectionRef.value
-  if (!section) return
+function observeOnce() {
+  const el = sectionRef.value
+  if (!el || hasTriggered.value) return
 
-  const observer = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !hasPlayed.value) {
-          playPreview()
-          obs.unobserve(section)
-        }
-      })
-    },
-    { threshold: 0.4 }
-  )
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !hasTriggered.value) {
+        hasTriggered.value = true
+        playPreview(6)
+        fetchViewsAndAnimate()
+        io.unobserve(el)
+        io.disconnect()
+      }
+    })
+  }, { threshold: 0.35 })
 
-  observer.observe(section)
-}
-
-const fetchViews = async () => {
-  const res = await fetch('http://localhost/portfolio-backend/api-total-views.php')
-  const data = await res.json()
-  animateCount(data.totalViews)
-}
-
-const animateCount = (target) => {
-  let current = 0
-  const step = Math.ceil(target / 100)
-  const interval = setInterval(() => {
-    current += step
-    if (current >= target) {
-      current = target
-      clearInterval(interval)
-    }
-    count.value = current
-  }, 20)
+  io.observe(el)
 }
 
 onMounted(() => {
-  fetchViews()
-  observeSection()
+  observeOnce()
 })
 
 onUnmounted(() => {
-  hasPlayed.value = false
+  cancelAnimationFrame(rafId)
 })
 </script>

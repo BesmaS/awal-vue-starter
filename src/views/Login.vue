@@ -22,7 +22,7 @@ const error = ref('')
 const router = useRouter()
 
 const login = async () => {
-  const res = await fetch('http:///bes.alwaysdata.net/login.php', {
+  const res = await fetch('http://localhost/portfolio-backend/login.php', {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify({

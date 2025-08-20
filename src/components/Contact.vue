@@ -66,7 +66,7 @@ const submitForm = async () => {
   error.value = false
 
   try {
-    const res = await fetch('http://localhost/portfolio-backend/contact.php', {
+    const res = await fetch('http://bes.alwaysdata.net/contact.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form.value)

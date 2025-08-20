@@ -1,5 +1,5 @@
 <template>
-  <section id="portfolio" class="py-20 px-4 bg-black">
+  <section data-aos="fade-up" id="portfolio" class="py-20 px-4 bg-black">
     <div class="max-w-6xl mx-auto">
       <h3 class="text-3xl font-bold mb-12 text-center text-beige">Nos Réalisations</h3>
 
