@@ -12,14 +12,14 @@
 
         <!-- Bloc 1 : Tournage vidéo -->
         <div data-aos="fade-up" class="bg-[#1a1a1a] p-6 rounded shadow md:col-span-5 md:row-span-2 flex flex-col justify-center">
-          <h4 class="text-xl font-semibold mb-2">Tournage vidéo</h4>
-          <p>Captation professionnelle pour tous types de projets.</p>
+          <h4 class="text-xl font-semibold mb-2">Production & Réalisation de vidéos</h4>
+          <p>Captation professionnelle, réalisation et montage pour tous types de projets audiovisuels (clips, interviews, événements, publicités…).</p>
         </div>
 
         <!-- Bloc 2 : Montage -->
         <div data-aos="fade-up" class="bg-[#1a1a1a] p-6 rounded shadow md:col-span-7 md:row-span-2 flex flex-col justify-center">
-          <h4 class="text-xl font-semibold mb-2">Montage & post-prod</h4>
-          <p>Montage, étalonnage, sound design et effets spéciaux.</p>
+          <h4 class="text-xl font-semibold mb-2">Accompagnement stratégique écriture de concept </h4>
+          <p>Développement d’idées, écriture de concepts, création de scénarios et direction artistique pour donner vie à vos projets visuels.</p>
         </div>
 
         <!-- Image / bloc droite -->
@@ -34,8 +34,8 @@
 
         <!-- Bloc 3 : Accompagnement créatif -->
         <div data-aos="fade-up" class="bg-[#1a1a1a] p-6 rounded shadow md:col-span-5 md:row-span-2 flex flex-col justify-center">
-          <h4 class="text-xl font-semibold mb-2">Accompagnement créatif</h4>
-          <p>Storytelling et direction artistique sur mesure.</p>
+          <h4 class="text-xl font-semibold mb-2">Recherche de sponsors et partenaire.</h4>
+          <p>Accompagnement dans la recherche et la négociation de partenariats et de sponsors, avec une approche sur mesure.</p>
         </div>
       </div>
     </div>

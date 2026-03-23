@@ -17,7 +17,7 @@
 
     <!-- titre -->
     <h2 class="text-5xl sm:text-6xl md:text-7xl font-zain font-bold leading-tight z-20 relative">
-      Votre vision,<br class="hidden sm:block" /> notre réalisation
+      VOTRE VISION,<br class="hidden sm:block" /> NOTRE REALISATION
     </h2>
 
   </section>
