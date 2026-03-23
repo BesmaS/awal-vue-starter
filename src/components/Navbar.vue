@@ -1,7 +1,7 @@
 <template>
   <header class="fixed top-0 w-full text-[#F4ECD8] z-50">
     <nav class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
-      <img src="/src/assets/images/logo-awal-sansbg.png" alt="AWAL Logo" class="h-14">
+      <img src="/src/assets/images/Logo 1.png" alt="AWAL Logo" class="h-14">
 
       <!-- Desktop -->
       <ul class="hidden md:flex items-center gap-3 font-zain">

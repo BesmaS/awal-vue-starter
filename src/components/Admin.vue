@@ -44,7 +44,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const API_URL = 'http://localhost/portfolio-backend/api.php' // à adapter selon ton chemin réel
+const API_URL = 'http://localhost/portfolio-backend/api.php' 
 
 const rawInput = ref('')
 const newVideo = ref({ youtube_id: '', title: '' })
@@ -62,11 +62,11 @@ const extractYoutubeId = () => {
       id = url.searchParams.get('v')
     }
   } catch {
-    id = input // ce n’est pas une URL, on considère que c’est déjà un ID
+    id = input 
   }
 
   newVideo.value.youtube_id = id
-  rawInput.value = id // pour remplacer visuellement dans le champ
+  rawInput.value = id 
 }
 
 const fetchVideos = async () => {
