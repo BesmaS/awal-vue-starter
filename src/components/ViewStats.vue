@@ -2,30 +2,33 @@
   <section
     data-aos="fade-up"
     ref="sectionRef"
-    class="py-16 px-2 md:px-1 bg-black text-[#F4ECD8]"
+    class="py-20 bg-black text-[#F4ECD8] overflow-hidden"
   >
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-start md:pl-6 md:pr-4">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center relative">
       
-      <!-- 🎥 Vidéo -->
-      <div class="w-full md:w-[58%]">
-        <video
-          ref="videoRef"
-          :src="videoSrc"
-          muted
-          playsinline
-          preload="auto"
-          class="w-full rounded-xl shadow-xl"
-        ></video>
+      <!-- 🖼️ Image (décalée à gauche) -->
+      <div class="w-full md:w-[70%] relative">
+        <img
+          :src="imageSrc"
+          alt="illustration"
+          class="w-full rounded-xl shadow-xl object-cover"
+        />
+
+        <!-- fondu à droite -->
+        <div class="absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-black to-transparent"></div>
       </div>
 
-      <!-- 📊 Compteur -->
-      <div class="w-full md:w-[42%] flex flex-col items-center justify-center mt-8 md:mt-20">
-        <span class="text-9xl font-extrabold leading-tight">
+      <!-- 📊 Compteur (superposé dans le fondu) -->
+      <div class="absolute md:right-10 right-1/2 translate-x-1/2 md:translate-x-0 text-center">
+        
+        <span class="text-7xl md:text-9xl font-extrabold leading-tight">
           {{ formattedCount }}
         </span>
-        <span class="font-zain text-4xl font-medium mt-4 text-[#d8cfc0]">
+
+        <p class="font-zain text-2xl md:text-3xl mt-4 text-[#d8cfc0]">
           vues cumulées
-        </span>
+        </p>
+
       </div>
 
     </div>
@@ -35,12 +38,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 
-/* refs */
 const sectionRef = ref(null)
-const videoRef = ref(null)
 
-/* vidéo */
-const videoSrc = new URL('../assets/videos/AnimationAwal.mp4', import.meta.url).href
+/* image */
+const imageSrc = new URL('../assets/images/TRIPOST FULL.jpg', import.meta.url).href
 
 /* compteur */
 const count = ref(0)
@@ -98,24 +99,7 @@ async function fetchViewsLive() {
 /* lancement live */
 function startLiveUpdates() {
   fetchViewsLive()
-  intervalId = setInterval(fetchViewsLive, 5000) // toutes les 5s
-}
-
-/* preview vidéo */
-function playPreview(seconds = 6) {
-  const vid = videoRef.value
-  if (!vid) return
-
-  vid.currentTime = 0
-  vid.play().catch(() => {})
-
-  const stopAt = seconds
-  const timer = setInterval(() => {
-    if (vid.currentTime >= stopAt || vid.ended) {
-      vid.pause()
-      clearInterval(timer)
-    }
-  }, 100)
+  intervalId = setInterval(fetchViewsLive, 5000)
 }
 
 /* observer */
@@ -128,7 +112,6 @@ function observeOnce() {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !hasTriggered.value) {
           hasTriggered.value = true
-          playPreview(6)
           startLiveUpdates()
           io.unobserve(el)
           io.disconnect()
